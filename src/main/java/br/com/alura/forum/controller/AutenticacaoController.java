@@ -20,7 +20,7 @@ import br.com.alura.forum.controller.form.LoginForm;
 
 @RestController
 @RequestMapping("/auth")
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class AutenticacaoController {
 	
 	@Autowired
@@ -32,8 +32,6 @@ public class AutenticacaoController {
 	@PostMapping
 	public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
 		UsernamePasswordAuthenticationToken dadosLogin = form.converter();
-		/*Por debaixo dos panos ao chamar o metodo authenticate, o spring sabe que precisa chamar o loadUserByUsername() da class AutenticacaoService
-		para autenticar se os dados passados estão no banco*/
 		
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);

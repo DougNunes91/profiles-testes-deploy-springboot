@@ -19,7 +19,7 @@ import br.com.alura.forum.repository.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -37,15 +37,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 	
-	//Configuracoes de autenticacao.
-	//O spring chamará o metodo loadUserByUsername da class AutenticaoService para autenticar o usuario
+	//Configuracoes de autenticacao
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	//Configuracoes de autorizacao
-	//URLs quando acessadas não precisarão passar por autenticacao, e outras não
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -62,17 +60,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	
 	
 	//Configuracoes de recursos estaticos(js, css, imagens, etc.)
-	//Liberando acesso aos respectivos arquivos sem a necessidade de autenticacao
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
 	}
 	
 }
-
-
-
-
-
-
-

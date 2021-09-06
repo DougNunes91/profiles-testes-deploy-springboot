@@ -14,16 +14,7 @@ public class DevSecurityConfigurations extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/**").permitAll()// para o profile dev (ambiente de dev), permitir todas as URLs
+		.antMatchers("/**").permitAll()
 		.and().csrf().disable();
 	}
-	
-	
 }
-
-
-
-
-
-
-

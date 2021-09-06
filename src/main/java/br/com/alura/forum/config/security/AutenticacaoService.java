@@ -17,7 +17,6 @@ public class AutenticacaoService implements UserDetailsService {
 	@Autowired
 	private UsuarioRepository repository;
 
-	//Há um controller no spring internamente q interceptará a requisicao do form e chamará este metodo para executar a logica de autenticacao
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Usuario> usuario = repository.findByEmail(username);

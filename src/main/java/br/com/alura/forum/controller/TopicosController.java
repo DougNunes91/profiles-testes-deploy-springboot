@@ -49,8 +49,6 @@ public class TopicosController {
 			@PageableDefault(sort = "dataCriacao", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
 		
 		if (nomeCurso == null) {
-			/*Passando como parametro a paginacao ao findAll, o spring data saberá q se trata de uma paginacao, e usará os parametros page e qtd.
-			Dentro do Page, contém a lista de Topicos e a paginacao. */
 			Page<Topico> topicos = topicoRepository.findAll(paginacao);
 			return TopicoDto.converter(topicos);
 		} else {

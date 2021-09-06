@@ -18,7 +18,7 @@ public class TokenService {
 	private String expiration;
 	
 	@Value("${forum.jwt.secret}")
-	private String secret; // chave usada para criptografar e descriptografar
+	private String secret;
 
 	public String gerarToken(Authentication authentication) {
 		Usuario logado = (Usuario) authentication.getPrincipal();
@@ -26,11 +26,11 @@ public class TokenService {
 		Date dataExpiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
 		
 		return Jwts.builder()
-				.setIssuer("API do Fórum da Alura")//Aqui dizemos qual API q gerou o token
-				.setSubject(logado.getId().toString())//Aqui dizemos quem é o dono do token
-				.setIssuedAt(hoje)//Aqui dizemos qual foi a data que geramos o token
-				.setExpiration(dataExpiracao)//Aqui eu seto a data de expiracao do token
-				.signWith(SignatureAlgorithm.HS256, secret)//Aqui eu criptografo o token
+				.setIssuer("API do Fórum da Alura")
+				.setSubject(logado.getId().toString())
+				.setIssuedAt(hoje)
+				.setExpiration(dataExpiracao)
+				.signWith(SignatureAlgorithm.HS256, secret)
 				.compact();
 	}
 	
@@ -45,7 +45,7 @@ public class TokenService {
 
 	public Long getIdUsuario(String token) {
 		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-		return Long.parseLong(claims.getSubject());// irá retornar o id do usuario q está dentro do token
+		return Long.parseLong(claims.getSubject());
 	}
 
 }

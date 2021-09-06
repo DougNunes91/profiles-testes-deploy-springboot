@@ -33,22 +33,18 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
 		if (valido) {
 			autenticarCliente(token);
 		}
-		// se for validado, esse metodo será chamado para a requisicao seguir com seu fluxo. Se nao, esse metodo será chamado tbm, mas será barrado
-		//pelo spring security
+		
 		filterChain.doFilter(request, response);
 	}
 
 	private void autenticarCliente(String token) {
 		Long idUsuario = tokenService.getIdUsuario(token);
 		Usuario usuario = repository.findById(idUsuario).get();
-		//passa como parametro o usuario, a senha n precisa pois ja está autenticado e, por isso, passamos null, e por fim os perfis do usuario
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-		//Estamos forcando a autenticacao abaixo, pois já foi validado o usuario pelo token
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
 	private String recuperarToken(HttpServletRequest request) {
-		//Através do cabecalho Authorization da requisicao, recupero o valor desse cabecalho, isto é, o token
 		String token = request.getHeader("Authorization");
 		if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
 			return null;
